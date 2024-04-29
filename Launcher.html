@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+
+<style id="webmakerstyle">
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f2f2f2;
+}
+
+.header {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.header h1 {
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.code {
+  width: calc(100% / 3 - 20px);
+  height: 200px;
+  margin: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  resize: none;
+}
+
+.buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.buttons button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.buttons button:hover {
+  background-color: #45a049;
+}
+
+.buttons button:active {
+  background-color: #3e8e41;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+</style>
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Psycho Engine</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <input type="file" id="file-input" accept=".html,.css,.js" style="display: none;">
+  <div class="header">
+    <h1>Psycho Engine</h1>
+    <button onclick="document.getElementById('file-input').click()">Import File</button>
+  </div>
+  <div class="container">
+    <textarea id="html-code" class="code" placeholder="Enter HTML code here..."></textarea>
+    <textarea id="css-code" class="code" placeholder="Enter CSS code here..."></textarea>
+    <textarea id="js-code" class="code" placeholder="Enter JavaScript code here..."></textarea>
+  </div>
+  <div class="buttons">
+    <button onclick="downloadFile('html')">Download HTML</button>
+    <button onclick="downloadFile('css')">Download CSS</button>
+    <button onclick="downloadFile('js')">Download JavaScript</button>
+  </div>
+
+  <script>
+    function downloadFile(type) {
+      let code, filename;
+      switch (type) {
+        case 'html':
+          code = document.getElementById('html-code').value;
+          filename = 'index.html';
+          break;
+        case 'css':
+          code = document.getElementById('css-code').value;
+          filename = 'styles.css';
+          break;
+        case 'js':
+          code = document.getElementById('js-code').value;
+          filename = 'script.js';
+          break;
+      }
+      const blob = new Blob([code], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => {
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }, 0);
+    }
+
+    document.getElementById('file-input').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const code = e.target.result;
+        const extension = file.name.split('.').pop();
+        switch (extension) {
+          case 'html':
+            document.getElementById('html-code').value = code;
+            break;
+          case 'css':
+            document.getElementById('css-code').value = code;
+            break;
+          case 'js':
+            document.getElementById('js-code').value = code;
+            break;
+          default:
+            alert('Unsupported file type');
+            break;
+        }
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>
+
+
+<script src="filesystem:https://webmaker.app/temporary/script.js">
+</script>
+</body>
+</html>
